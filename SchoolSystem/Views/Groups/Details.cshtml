@@ -1,0 +1,110 @@
+﻿@model SchoolSystem.Models.Groups
+
+@{
+    ViewBag.Title = "Details of Subjects";
+}
+
+<div class="col-md-6">
+    <h2>Subjects / Groups</h2>
+
+    <div>
+
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                Teacher
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Teacher.FullName)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Description)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Description)
+            </dd>
+
+        </dl>
+        
+    </div>
+    <p>
+        @Html.ActionLink("Add Student", "AddStudent", new { id = Model.GroupId }, new { @class = "btn btn-success" }) |
+        @Html.ActionLink("Edit", "Edit", new { id = Model.GroupId }, new { @class = "btn btn-info" }) |
+        @Html.ActionLink("Back to List", "Index", new { }, new { @class = "btn btn-primary" })
+    </p>
+</div>
+
+
+
+<div class="col-md-6">
+    @if (!string.IsNullOrEmpty(Model.Teacher.Photo))
+    {
+        <img src="@Url.Content(Model.Teacher.Photo)" alt="Image" style="width:300px;height:300px;max-width: 100%; height: auto;" />
+    }
+</div>
+
+<br /><br />
+
+<h4>Students registered in this course</h4>
+@if (Model.GroupsDetails.Count == 0)
+{
+    <h5>No registered students in this course</h5>
+}
+else
+{
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.GroupsDetails.FirstOrDefault().Student.UserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GroupsDetails.FirstOrDefault().Student.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GroupsDetails.FirstOrDefault().Student.Surname)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GroupsDetails.FirstOrDefault().Student.Phone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GroupsDetails.FirstOrDefault().Student.Photo)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model.GroupsDetails)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Student.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Student.FullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Student.Surname)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Student.Phone)
+                </td>
+                <td>
+                    @if (!string.IsNullOrEmpty(item.Student.Photo))
+                    {
+                        <img src="@Url.Content(item.Student.Photo)" alt="Image" style="width:50px;height:50px;max-width: 100%; height: auto;" />
+                    }
+
+                </td>
+               
+                <td>
+                    @Html.ActionLink("Delete", "DeleteStudent", new { id = item.GroupsDetailsId }, new { @class = "btn btn-danger", onclick = "return confirm('Are you sure do you want do delete thid student ?')"})
+                </td>
+            </tr>
+        }
+
+    </table>
+
+}
+
